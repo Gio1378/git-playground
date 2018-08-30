@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -46,10 +48,6 @@ class OffersRecipes
      */
     private $breakTime;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $Theme;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\RecipesCategories", inversedBy="offersRecipes")
@@ -60,6 +58,16 @@ class OffersRecipes
      * @ORM\ManyToOne(targetEntity="App\Entity\SubRecipesCategories", inversedBy="offersRecipes")
      */
     private $subCategory;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\SubTheme", inversedBy="offersRecipes")
+     */
+    private $subTheme;
+
+    public function __construct()
+    {
+        $this->subTheme = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -138,18 +146,6 @@ class OffersRecipes
         return $this;
     }
 
-    public function getTheme(): ?string
-    {
-        return $this->Theme;
-    }
-
-    public function setTheme(string $Theme): self
-    {
-        $this->Theme = $Theme;
-
-        return $this;
-    }
-
     public function getCategory(): ?RecipesCategories
     {
         return $this->category;
@@ -170,6 +166,32 @@ class OffersRecipes
     public function setSubCategory(?SubRecipesCategories $subCategory): self
     {
         $this->subCategory = $subCategory;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|SubTheme[]
+     */
+    public function getSubTheme(): Collection
+    {
+        return $this->subTheme;
+    }
+
+    public function addSubTheme(SubTheme $subTheme): self
+    {
+        if (!$this->subTheme->contains($subTheme)) {
+            $this->subTheme[] = $subTheme;
+        }
+
+        return $this;
+    }
+
+    public function removeSubTheme(SubTheme $subTheme): self
+    {
+        if ($this->subTheme->contains($subTheme)) {
+            $this->subTheme->removeElement($subTheme);
+        }
 
         return $this;
     }

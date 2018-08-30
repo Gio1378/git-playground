@@ -73,11 +73,22 @@ class Recipes
      */
     private $comments;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\SubRecipesCategories", inversedBy="recipes")
+     */
+    private $subRecipesCategories;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\SubTheme", inversedBy="recipes")
+     */
+    private $subThemes;
+
     public function __construct()
     {
         $this->relatedPrincipalIngredient = new ArrayCollection();
         $this->numberOfViews = new ArrayCollection();
         $this->comments = new ArrayCollection();
+        $this->subThemes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -265,6 +276,44 @@ class Recipes
             if ($comment->getRecipe() === $this) {
                 $comment->setRecipe(null);
             }
+        }
+
+        return $this;
+    }
+
+    public function getSubRecipesCategories(): ?SubRecipesCategories
+    {
+        return $this->subRecipesCategories;
+    }
+
+    public function setSubRecipesCategories(?SubRecipesCategories $subRecipesCategories): self
+    {
+        $this->subRecipesCategories = $subRecipesCategories;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|SubTheme[]
+     */
+    public function getSubThemes(): Collection
+    {
+        return $this->subThemes;
+    }
+
+    public function addSubTheme(SubTheme $subTheme): self
+    {
+        if (!$this->subThemes->contains($subTheme)) {
+            $this->subThemes[] = $subTheme;
+        }
+
+        return $this;
+    }
+
+    public function removeSubTheme(SubTheme $subTheme): self
+    {
+        if ($this->subThemes->contains($subTheme)) {
+            $this->subThemes->removeElement($subTheme);
         }
 
         return $this;

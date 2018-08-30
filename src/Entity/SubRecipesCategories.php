@@ -33,9 +33,15 @@ class SubRecipesCategories
      */
     private $category;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Recipes", mappedBy="subRecipesCategories")
+     */
+    private $recipes;
+
     public function __construct()
     {
         $this->offersRecipes = new ArrayCollection();
+        $this->recipes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -94,6 +100,37 @@ class SubRecipesCategories
     public function setCategory(?RecipesCategories $category): self
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Recipes[]
+     */
+    public function getRecipes(): Collection
+    {
+        return $this->recipes;
+    }
+
+    public function addRecipe(Recipes $recipe): self
+    {
+        if (!$this->recipes->contains($recipe)) {
+            $this->recipes[] = $recipe;
+            $recipe->setSubRecipesCategories($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRecipe(Recipes $recipe): self
+    {
+        if ($this->recipes->contains($recipe)) {
+            $this->recipes->removeElement($recipe);
+            // set the owning side to null (unless already changed)
+            if ($recipe->getSubRecipesCategories() === $this) {
+                $recipe->setSubRecipesCategories(null);
+            }
+        }
 
         return $this;
     }
