@@ -7,7 +7,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\RecettesRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\RecipesRepository")
  */
 class Recipes
 {
@@ -19,7 +19,7 @@ class Recipes
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, unique=true)
      */
     private $name;
 
@@ -37,11 +37,6 @@ class Recipes
      * @ORM\Column(type="text")
      */
     private $making;
-
-    /**
-     * @ORM\Column(type="text")
-     */
-    private $ingredient;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\ElementaryIngredients", inversedBy="recipes")
@@ -82,6 +77,11 @@ class Recipes
      * @ORM\ManyToMany(targetEntity="App\Entity\SubTheme", inversedBy="recipes")
      */
     private $subThemes;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $image;
 
     public function __construct()
     {
@@ -141,18 +141,6 @@ class Recipes
     public function setMaking(string $making): self
     {
         $this->making = $making;
-
-        return $this;
-    }
-
-    public function getIngredient(): ?string
-    {
-        return $this->ingredient;
-    }
-
-    public function setIngredient(string $ingredient): self
-    {
-        $this->ingredient = $ingredient;
 
         return $this;
     }
@@ -315,6 +303,18 @@ class Recipes
         if ($this->subThemes->contains($subTheme)) {
             $this->subThemes->removeElement($subTheme);
         }
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(?string $image): self
+    {
+        $this->image = $image;
 
         return $this;
     }

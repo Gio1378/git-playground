@@ -24,6 +24,12 @@ class OffersRecipes
     private $descriptions;
 
     /**
+     * @var string
+     * @ORM\Column(type="string", length=150, unique=true)
+     */
+    private $name;
+
+    /**
      * @ORM\Column(type="string", length=100)
      */
     private $author;
@@ -73,6 +79,25 @@ class OffersRecipes
     {
         return $this->id;
     }
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string $name
+     * @return OffersRecipes
+     */
+    public function setName(string $name): OffersRecipes
+    {
+        $this->name = $name;
+        return $this;
+    }
+
 
     public function getDescriptions(): ?string
     {

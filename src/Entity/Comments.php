@@ -3,9 +3,11 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Tests\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CommentsRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Comments
 {
@@ -38,6 +40,7 @@ class Comments
 
     /**
      * @ORM\Column(type="text")
+     *
      */
     private $commentText;
 
@@ -104,5 +107,12 @@ class Comments
         $this->commentText = $commentText;
 
         return $this;
+    }
+
+    /**
+     * @ORM\PrePersist()
+     */
+    public function prePersistEvent(){
+        $this->createdAt = new \DateTime();
     }
 }
