@@ -1,0 +1,3 @@
+#bin#index:
+#    path: /
+#    controller: App\Controller\DefaultController::index
