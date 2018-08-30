@@ -63,9 +63,21 @@ class Recipes
      */
     private $nbOfPersons;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\NumberOfViews", mappedBy="recipes")
+     */
+    private $numberOfViews;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Comments", mappedBy="recipe")
+     */
+    private $comments;
+
     public function __construct()
     {
         $this->relatedPrincipalIngredient = new ArrayCollection();
+        $this->numberOfViews = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -195,4 +207,67 @@ class Recipes
 
         return $this;
     }
+
+    /**
+     * @return Collection|NumberOfViews[]
+     */
+    public function getNumberOfViews(): Collection
+    {
+        return $this->numberOfViews;
+    }
+
+    public function addNumberOfView(NumberOfViews $numberOfView): self
+    {
+        if (!$this->numberOfViews->contains($numberOfView)) {
+            $this->numberOfViews[] = $numberOfView;
+            $numberOfView->setRecipes($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNumberOfView(NumberOfViews $numberOfView): self
+    {
+        if ($this->numberOfViews->contains($numberOfView)) {
+            $this->numberOfViews->removeElement($numberOfView);
+            // set the owning side to null (unless already changed)
+            if ($numberOfView->getRecipes() === $this) {
+                $numberOfView->setRecipes(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Comments[]
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Comments $comment): self
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments[] = $comment;
+            $comment->setRecipe($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comments $comment): self
+    {
+        if ($this->comments->contains($comment)) {
+            $this->comments->removeElement($comment);
+            // set the owning side to null (unless already changed)
+            if ($comment->getRecipe() === $this) {
+                $comment->setRecipe(null);
+            }
+        }
+
+        return $this;
+    }
+
 }
