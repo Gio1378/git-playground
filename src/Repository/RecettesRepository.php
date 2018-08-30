@@ -2,21 +2,21 @@
 
 namespace App\Repository;
 
-use App\Entity\Recettes;
+use App\Entity\Recipes;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
- * @method Recettes|null find($id, $lockMode = null, $lockVersion = null)
- * @method Recettes|null findOneBy(array $criteria, array $orderBy = null)
- * @method Recettes[]    findAll()
- * @method Recettes[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Recipes|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Recipes|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Recipes[]    findAll()
+ * @method Recipes[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class RecettesRepository extends ServiceEntityRepository
 {
     public function __construct(RegistryInterface $registry)
     {
-        parent::__construct($registry, Recettes::class);
+        parent::__construct($registry, Recipes::class);
     }
 
 //    /**
